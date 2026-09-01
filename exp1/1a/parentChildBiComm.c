@@ -7,8 +7,8 @@
 
 int main()
 {
-    int fd1[2];      // Parent -> Child
-    int fd2[2];      // Child -> Parent
+    int fd1[2]; // Parent -> Child
+    int fd2[2]; // Child -> Parent
 
     char fixed_str[] = "Happy ";
     char input_str[100];
@@ -41,27 +41,23 @@ int main()
     {
         char concat_str[100];
 
-        close(fd1[0]);
-
-        write(fd1[1], input_str, strlen(input_str) + 1);
+        close(fd1[0]); // Close reading end of first pipe
+        write(fd1[1], input_str, strlen(input_str) + 1); // +1 because
 
         close(fd1[1]);
 
-        wait(NULL);
+        wait(NULL); //wait till child process completes
 
         close(fd2[1]);
-
         read(fd2[0], concat_str, 100);
-
         printf("Concatenated String : %s\n", concat_str);
-
         close(fd2[0]);
     }
 
     // Child Process
     else
     {
-        close(fd1[1]);
+        close(fd1[1]);// Close writing end of first pipe
 
         char concat_str[100];
 
@@ -69,16 +65,16 @@ int main()
 
         int k = strlen(concat_str);
 
-        for(int i=0;i<strlen(fixed_str);i++)
+        for (int i = 0; i < strlen(fixed_str); i++)
             concat_str[k++] = fixed_str[i];
 
-        concat_str[k]='\0';
+        concat_str[k] = '\0';
 
         close(fd1[0]);
 
         close(fd2[0]);
 
-        write(fd2[1], concat_str, strlen(concat_str)+1);
+        write(fd2[1], concat_str, strlen(concat_str) + 1);
 
         close(fd2[1]);
     }

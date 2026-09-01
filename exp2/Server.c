@@ -1,61 +1,71 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<sys/types.h>
-#include<unistd.h>
-#include<string.h>
-#include<sys/wait.h>
-#include<sys/shm.h>
-#include<sys/ipc.h>
-#define smsize 1024
+#include <stdio.h>
 
-int main(){
-	int n;
-	pid_t id;
-	//key_t k=ftok("sfile",65);
-	key_t k=128003213;
-	int smid=shmget(k,smsize,0666 | IPC_CREAT);
-	char* str=shmat(smid,NULL,0);
+#include <stdlib.h>
+#include <string.h>
 
-	if (k == -1){
-		printf("Unique key not created ...\n");
-		return 0;
-	}
-	if(smid==-1){
-		printf("shm id not created...\n");
-		return 0;
-	}
-	if(str==(char*)-1){
-		printf("shm adress ptr not created...\n");
-		return 0;
-	}
+#include <unistd.h> // For fork() and other system calls
+#include <sys/wait.h> // For wait() to wait for child process
+#include <sys/shm.h> // For shared memory functions
+#include <sys/ipc.h> // For IPC functions
 
-	id=fork();
-	if(id==-1){
-		printf("Child not created...\n");
-		return 0;
-	}
-	else if(id==0){
-		//child process
-		/*printf("Enter a line to read 4 server : ");// to read one line
-		from user
-		scanf("%[^\n]",str);*/
-		char* cp=str;
-		printf("Enter many lines & type \"exit\" to end the process :");
+#define SIZE 1024
+ 
+int main()
+{
+    key_t key = 1234;
+    int shmid;
+    char *str;
+    pid_t id;
 
-		while (fgets(cp, smsize - (cp - str), stdin) != NULL){
-			cp += strlen(cp); // Move pointer to the end
-			if (strcmp(cp-strlen("exit\n"), "exit\n") == 0){
-				break; // Exit the loop if the user types 'exit'
-			}
-		}
-		printf("\nSize of \"%s\" is : %ld",str,strlen(str));
-	}
-	else{
-		//parent process
+    shmid = shmget(key, 1024, 0666 | IPC_CREAT);
 
-		wait(NULL);
-		printf("\nThe parent after completion of child...\n");
-	}
-	shmdt(str);
-	return 0;
+    if(shmid == -1)
+    {
+        printf("Shared memory creation failed\n");
+        return 0;
+    }
+
+    str = (char *)shmat(shmid, NULL, 0);
+
+    if(str == (char *)-1)
+    {
+        printf("Shared memory attachment failed\n");
+        return 0;
+    }
+
+    id = fork();
+
+    if(id == -1)
+    {
+        printf("Child creation failed\n");
+        return 0;
+    }
+
+    if(id == 0)
+    {
+        // Child
+        char *cp = str;
+
+        printf("Enter lines (type exit to stop):\n");
+
+        while(fgets(cp, SIZE - (cp - str), stdin) != NULL)
+        {
+            if(strcmp(cp, "exit\n") == 0)
+                break;
+
+            cp += strlen(cp);
+        }
+
+        printf("\nSize of the given line: %ld\n", strlen(str));
+    }
+    else
+    {
+        // Parent
+        wait(NULL);
+        printf("\nParent after child completion...\n");
+    }
+
+    shmdt(str);
+
+    return 0;
 }

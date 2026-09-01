@@ -12,7 +12,7 @@ int main()
 
     pid_t pid = fork();
 
-    if(pid == 0)
+    if(pid == 0) //child
     {
         close(pipe_fd[1]);        // Close write end
 
@@ -22,7 +22,7 @@ int main()
 
         close(pipe_fd[0]);
     }
-    else
+    else //parent
     {
         close(pipe_fd[0]);        // Close read end
 

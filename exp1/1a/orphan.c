@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
 int main()
 {
     pid_t pid;
@@ -13,7 +12,7 @@ int main()
         printf("Parent Process\n");
         printf("Parent PID : %d\n", getpid());
 
-        exit(0);      // Parent exits immediately
+        exit(0);      // Parent exits immediately, child becomes orphan
     }
     else if(pid == 0)
     {

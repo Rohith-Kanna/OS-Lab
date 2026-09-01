@@ -8,7 +8,7 @@
 
 int main(){
 	//key_t k=ftok("sfile",65);
-	key_t k=128003213;
+	key_t k=1234;
 	int smid=shmget(k,1024,0666 | IPC_CREAT);
 
 	char* str=shmat(smid,NULL,0);

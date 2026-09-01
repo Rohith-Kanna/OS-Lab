@@ -13,13 +13,13 @@ int main()
     {
         printf("Fork Failed\n");
     }
-    else if(pid == 0)
+    else if(pid == 0) //child
     {
         printf("\n----- Child Process -----\n");
         printf("Child PID : %d\n", getpid());
         printf("Child's Parent PID : %d\n", getppid());
     }
-    else
+    else //parent
     {
         printf("\n----- Parent Process -----\n");
         printf("Parent PID : %d\n", getpid());
