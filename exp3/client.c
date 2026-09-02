@@ -16,7 +16,7 @@ int main()
 {
     key_t k;
     int mqid;
-    long uk;
+    long uk; // unique key for message type
     char s1[2], s2[3] = "n";
     // key = ftok("progfile", 65);
 
@@ -38,7 +38,7 @@ int main()
         scanf("%s", s1);
     } while (strcmp(s1, s2) != 0);
 
-    msgctl(mqid, IPC_RMID, 0);
+    msgctl(mqid, IPC_RMID, 0); // remove the message queue after use
 
     return 0;
 }

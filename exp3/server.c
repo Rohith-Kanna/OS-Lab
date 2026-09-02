@@ -16,7 +16,7 @@ int main()
 {
     key_t k;
     int mqid;
-    char s1[5], s2[5] = "n";
+    char s1[5], s2[5] = "n"; 
     // k = ftok("progfile", 65);
 
     k = 126014035;

@@ -198,7 +198,7 @@ void round_robin(struct Process original[], int n, int quantum)
     int rear = 0;          // Rear of queue
 
     int time = 0;          // Current time unit
-    int completed = 0;     // Number of completed processes
+    int completed = 0;     // Number of completed processes 
     int i;
     int current = -1;      // Currently executing process
     int qtime = 0;         // Time spent on current process (for quantum)
