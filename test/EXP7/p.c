@@ -1,3 +1,5 @@
+//N-process peterson
+
 //this code is a C program that implements a ticket booking system using 
 // Peterson's algorithm for mutual exclusion. It creates two threads: one for the server and one for the client. 
 //The server checks and adjusts the total number of available seats, while the client allows users to book or cancel tickets. The program ensures that both threads can safely access shared resources without conflicts, using busy waiting to manage access to critical sections. The program continues running until the user chooses to exit, at which point it cleans up and displays the final state of available seats.
