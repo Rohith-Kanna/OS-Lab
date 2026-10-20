@@ -42,7 +42,7 @@ int main()
         char concat_str[100];
 
         close(fd1[0]); // Close reading end of first pipe
-        write(fd1[1], input_str, strlen(input_str) + 1); // +1 because
+        write(fd1[1], input_str, strlen(input_str) + 1); // +1 because we want to send the null terminator as well
 
         close(fd1[1]);
 
@@ -57,25 +57,21 @@ int main()
     // Child Process
     else
     {
+        // P->C
         close(fd1[1]);// Close writing end of first pipe
-
         char concat_str[100];
-
         read(fd1[0], concat_str, 100);
 
         int k = strlen(concat_str);
-
         for (int i = 0; i < strlen(fixed_str); i++)
             concat_str[k++] = fixed_str[i];
-
         concat_str[k] = '\0';
 
         close(fd1[0]);
 
+        //C->P
         close(fd2[0]);
-
         write(fd2[1], concat_str, strlen(concat_str) + 1);
-
         close(fd2[1]);
     }
 

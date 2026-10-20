@@ -27,8 +27,8 @@ void fcfs(struct Process p[], int n)
 
         time = time + p[i].bt;
         p[i].ct = time;
-        p[i].tat = p[i].ct - p[i].at;
-        p[i].wt = p[i].tat - p[i].bt;
+        p[i].tat = p[i].ct - p[i].at; //TAT = CT - AT
+        p[i].wt = p[i].tat - p[i].bt; //WT = TAT - BT
 
         avg_tat = avg_tat + p[i].tat; // calc sum here
         avg_wt = avg_wt + p[i].wt;    // sum
@@ -87,7 +87,7 @@ void sjf(struct Process p[], int n)
     {
         index = -1; // index of the process with the shortest burst time
 
-        for (i = 0; i < n; i++)
+        for (i = 0; i < n; i++) //find min Index 
         {
             if (completed[i] == 0 && p[i].at <= time)
             {
@@ -98,7 +98,7 @@ void sjf(struct Process p[], int n)
             }
         }
 
-        if (index == -1)
+        if (index == -1) //it occurs when no process is available to execute at the current time
         {
             time++;
 

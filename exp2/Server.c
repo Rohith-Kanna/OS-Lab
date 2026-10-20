@@ -25,11 +25,10 @@ int main()
         return 0;
     }
 
-    str = (char *)shmat(shmid, NULL, 0);
+    str = (char *)shmat(shmid, NULL, 0); //attach shared memory
 
     if(str == (char *)-1)
-    {
-        printf("Shared memory attachment failed\n");
+    {   printf("Shared memory attachment failed\n");
         return 0;
     }
 

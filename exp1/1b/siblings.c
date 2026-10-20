@@ -42,9 +42,9 @@ int main()
 
         char msg1[] = "This is Child 1...";
 
-        write(id1[1], msg1, sizeof(msg1));
+        write(id1[1], msg1, sizeof(msg1)); //C1->C2
 
-        read(id2[0], s1, sizeof(s1));
+        read(id2[0], s1, sizeof(s1)); //C2->C1
 
         printf("Child 1 reads : \"%s\" from Child 2\n", s1);
 
@@ -73,11 +73,11 @@ int main()
 
             char msg2[] = "This is Child 2...";
 
-            read(id1[0], s2, sizeof(s2));
+            read(id1[0], s2, sizeof(s2)); //C1->C2
 
             printf("Child 2 reads : \"%s\" from Child 1\n", s2);
 
-            write(id2[1], msg2, sizeof(msg2));
+            write(id2[1], msg2, sizeof(msg2)); //C2->C1
 
             close(id1[0]);
             close(id2[1]);
