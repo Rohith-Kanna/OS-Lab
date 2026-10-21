@@ -1,3 +1,4 @@
+//rrsrtf with 1 cpu
 #include <stdio.h>
 
 struct Process
@@ -46,8 +47,8 @@ void rr(struct Process p[], int n, int q)
                 current = queue[front++];
                 qtime = 0;
 
-                if(p[current].first == -1)
-                    p[current].first = time;
+                if(p[current].first == -1)//first time this process is getting CPU
+                    p[current].first = time; //first for finding response time
             }
             else
             {
