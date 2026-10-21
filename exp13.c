@@ -1,3 +1,4 @@
+//program to simulate FIFO, Optimal and LRU page replacement algorithms
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -43,7 +44,7 @@ int simulateFIFO(int pages[], int n, int f) {
     for (int i = 0; i < n; i++) {
         printf("%d\t\t", pages[i]);
 
-        if (!isInMemory(pages[i], frames, f)) {
+        if (!isInMemory(pages[i], frames, f)) { //page fault
             frames[ptr] = pages[i];
             ptr = (ptr + 1) % f;
             faults++;
@@ -68,7 +69,7 @@ int findOptimal(int pages[], int n, int frames[], int f, int start) {
             if (frames[i] == pages[j])
                 break;
 
-        if (j == n)//page never used again, return this index
+        if (j == n)//page never used again, return i meaning replace this page
             return i;
 
         if (j > farthest) {
@@ -96,13 +97,13 @@ int simulateOptimal(int pages[], int n, int f) {
 
         if (!isInMemory(pages[i], frames, f)) {
             faults++;
-            int k = 0;
+            int k = 0; //find first empty frame
 
             while (k < f && frames[k] != -1)
                 k++;
 
-            if (k == f)
-                k = findOptimal(pages, n, frames, f, i + 1);
+            if (k == f) //no empty frame, find optimal page to replace
+                k = findOptimal(pages, n, frames, f, i + 1); //i+1 because we want to find the next use of the pages after the current page
 
             frames[k] = pages[i];
         }
@@ -130,25 +131,25 @@ int simulateLRU(int pages[], int n, int f) {
         printf("%d\t\t", pages[i]);
 
         int j;
-        if (isInMemory(pages[i], frames, f)) {
+        if (isInMemory(pages[i], frames, f)) { //page hit, update last used index
             for (j = 0; j < f; j++)
                 if (frames[j] == pages[i]) {
                     last_used[j] = i;
                     break;
                 }
-        } else {
+        } else { //page fault, find least recently used page to replace
             faults++;
             int k = -1;
 
-            for (j = 0; j < f; j++)
+            for (j = 0; j < f; j++) //find first empty frame
                 if (frames[j] == -1) {
                     k = j;
                     break;
                 }
 
-            if (k == -1) {
+            if (k == -1) { //no empty frame, find least recently used page to replace
                 k = 0;
-                for (j = 1; j < f; j++)
+                for (j = 1; j < f; j++)//j=1 because we are comparing with the first frame
                     if (last_used[j] < last_used[k])
                         k = j;
             }
@@ -172,8 +173,8 @@ int main() {
     printf("Enter number of page references: ");
     scanf("%d", &n);
 
-    if (f <= 0 || n <= 0)
-        return 1;
+    // if (f <= 0 || n <= 0)
+    //     return 1;
 
     int pages[n];
 

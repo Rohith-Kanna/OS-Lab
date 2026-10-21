@@ -4,7 +4,7 @@
 
 #define MAX 20
 
-int a[MAX], n, head, diskSize, direction;
+int a[MAX], n, head, diskSize, direction; //n- number of requests
 
 void sort(int x[], int n)
 {
@@ -17,11 +17,11 @@ void sort(int x[], int n)
             }
 }
 
-void show(int x[], int count, int start) //used to display the sequence of head movements and calculate total and average seek distance
+void show(int x[], int n, int start) //used to display the sequence of head movements and calculate total and average seek distance
 {
     int curr = start, total = 0;
     printf("%d", start);
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < n; i++) {
         total += abs(x[i] - curr);
         curr = x[i];
         printf(" -> %d", curr);
@@ -44,7 +44,7 @@ void SSTF()
     for (int i = 0; i < n; i++) {
         int best = -1, dist = 1000000;
 
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < n; j++) //find the closest request to the current head position
             if (!used[j] && abs(a[j] - curr) < dist) {
                 dist = abs(a[j] - curr);
                 best = j;
@@ -105,7 +105,7 @@ void CSCAN()
 
     int b[MAX + 2], k = 0;
 
-    if (direction == 1) {
+    if (direction == 1) { 
         for (int i = 0; i < r; i++) b[k++] = right[i];
         for (int i = 0; i < l; i++) b[k++] = left[i];
     } else {
@@ -131,7 +131,7 @@ void LOOK()
 
     int b[MAX], k = 0;
 
-    if (direction == 1) {
+    if (direction == 1) {// same as SCAN but without boundaries
         for (int i = 0; i < r; i++) b[k++] = right[i];
         for (int i = l - 1; i >= 0; i--) b[k++] = left[i];
     } else {
@@ -157,7 +157,7 @@ void CLOOK()
 
     int b[MAX], k = 0;
 
-    if (direction == 1) {
+    if (direction == 1) { //same as C-SCAN but without boundaries
         for (int i = 0; i < r; i++) b[k++] = right[i];
         for (int i = 0; i < l; i++) b[k++] = left[i];
     } else {
@@ -177,10 +177,10 @@ int main()
     printf("Enter disk size (number of tracks): ");
     scanf("%d", &diskSize);
 
-    if (n < 1 || n > MAX || diskSize < 2) {
-        printf("Invalid input\n");
-        return 1;
-    }
+    // if (n < 1 || n > MAX || diskSize < 2) {
+    //     printf("Invalid input\n");
+    //     return 1;
+    // }
 
     printf("Enter request queue: ");
     for (int i = 0; i < n; i++) {
@@ -194,18 +194,18 @@ int main()
     printf("Enter initial head position: ");
     scanf("%d", &head);
 
-    if (head < 0 || head >= diskSize) {
-        printf("Invalid head position\n");
-        return 1;
-    }
+    // if (head < 0 || head >= diskSize) {
+    //     printf("Invalid head position\n");
+    //     return 1;
+    // }
 
     printf("Direction (1 = up, 0 = down): ");
     scanf("%d", &direction);
 
-    if (direction != 0 && direction != 1) {
-        printf("Invalid direction\n");
-        return 1;
-    }
+    // if (direction != 0 && direction != 1) {
+    //     printf("Invalid direction\n");
+    //     return 1;
+    // }
 
     FCFS();
     SSTF();

@@ -1,4 +1,4 @@
-
+//prg to simulate memory allocation using first fit, best fit and worst fit algorithms
 #include <stdio.h>
 
 #define B 5 //buffer blocks
@@ -28,12 +28,12 @@ int choose(struct block b[], int size, int mode) {
     for (int i = 0; i < B; i++) {
         if (!b[i].allocated && b[i].size >= size) {
             if (mode == 1)
-                return i;                 // First Fit
+                return i;// First Fit
 
             if (pos == -1 ||
                 (mode == 2 && b[i].size < b[pos].size) ||
                 (mode == 3 && b[i].size > b[pos].size))
-                pos = i;                  // Best / Worst Fit
+                pos = i;// Best / Worst Fit
         }
     }
     return pos;
@@ -67,11 +67,11 @@ void simulate(int mode, char name[]) {
 
     init(b);
     for (int i = 0; i < B; i++)
-        total += b[i].size;
+        total += b[i].size;//total memory size
 
     printf("\n--- %s ---\n", name);
 
-    for (int p = 0; p < P; p++) {
+    for (int p = 0; p < P; p++) {//for each process
         int k = choose(b, req[p], mode);
 
         printf("\nProcess P%d requests %d KB\n", p + 1, req[p]);
@@ -87,8 +87,7 @@ void simulate(int mode, char name[]) {
         b[k].pid = p + 1;
         success++;
 
-        printf("Allocated Block %d: start=%d, size=%d KB\n",
-               k + 1, b[k].start, b[k].size);
+        printf("Allocated Block %d: start=%d, size=%d KB\n",k + 1, b[k].start, b[k].size);
         stats(b, total, req[p], p + 1);
 
         b[k].allocated = 0;
